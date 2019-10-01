@@ -730,10 +730,12 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 /*************************** Loading *****************************/
 /*****************************************************************/
 
+	showAlert('TEST - Please enter your e-mail: \n\n');
 	$('#wager').numOnly();
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
 	$('#newGame, #cancel').on('click', function(e) { e.preventDefault(); });
 	$('#cancel').on('click', function() { $('#myModal').modal('hide'); });
+	// aca carga valor del banco 
 	$('#wager').val(100);
 	$('#cash span').html(player.getCash());
 	player.getBank();
