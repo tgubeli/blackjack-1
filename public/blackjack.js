@@ -51,10 +51,14 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 	function Player() {
 		var hand  = [],
 				wager = 0,
-				cash  = 1000,
+				cash  = 0,
 				bank  = 0,
 				ele   = '',
 				score = '';
+
+		var account_info = [],
+				email = '',
+				account_number = '';
 
 		this.getElements = function() {
 			if(this === player) {
@@ -298,6 +302,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				showAlert('Wager cannot exceed available cash!');
 			}
 		};
+
 	}
 
 /*****************************************************************/
@@ -419,6 +424,10 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		player.getBank();
 	};
 
+/*	Player.prototype.getMoneyFromAccount = function(accName, qty) {
+		
+	}
+*/
 	Number.prototype.formatMoney = function(c, d, t) {
 		var n = this, 
 		    s = n < 0 ? '-' : '',
@@ -678,11 +687,14 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		if(parseInt(player.getCash()) < 1) {
 			$('#myModal').modal();
 			$('#newGame').on('click', function() {
-				player.setCash(1000);
+				//player.setCash(1000);
 				$(this).unbind('click');
 				$('#myModal').modal('hide');
 			});
 		}
+	}
+	function emailIsValid(email) {
+		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) 
 	}
 
 /*****************************************************************/
@@ -730,7 +742,39 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 /*************************** Loading *****************************/
 /*****************************************************************/
 
-	showAlert('TEST - Please enter your e-mail: \n\n');
+	//showAlert('TEST - Please enter your e-mail: \n\n');
+	$('#myModalInit').modal();
+
+	$('#newGame').on('click', function(e) { 
+		var email = document.getElementById('account-email').value;
+
+
+		if (!emailIsValid(email)) {
+			alert('Please enter a valid redhat.com email address!');	
+			location.reload(true);
+		} else {
+			alert('valid!');
+
+			var url = 'http://blackjack-api.apps.scldemo-1a93.open.redhat.com/blackjack/user?email='+email;
+			//var url = 'https://ghibliapi.herokuapp.com/people';
+			//const fetchPromise = fetch(url, { mode: 'no-cors', headers: {'Content-Type': 'application/json'}  } );
+			const fetchPromise = fetch(url);
+
+			fetchPromise.then(response => {
+				return response.json();
+			}).then( data => {
+				var amount = data.account.balance.amount;
+				player.setCash(amount);
+				console.log('amount is : '+ amount);
+				console.log(data);
+			});
+						
+			console.log('email is: '+ document.getElementById('account-email').value);
+		}
+	});
+
+	$('#newGame').on('click', function() { $('#myModalInit').modal('hide'); });
+
 	$('#wager').numOnly();
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
 	$('#newGame, #cancel').on('click', function(e) { e.preventDefault(); });
