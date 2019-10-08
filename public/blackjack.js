@@ -748,28 +748,28 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 	$('#newGame').on('click', function(e) { 
 		var email = document.getElementById('account-email').value;
 
-
 		if (!emailIsValid(email)) {
 			alert('Please enter a valid redhat.com email address!');	
 			location.reload(true);
 		} else {
-			alert('valid!');
+			const url = 'http://blackjack-api.apps.scldemo-4599.open.redhat.com/blackjack/user?email='+email;
+			const config = {
+				    method: "GET",
+					mode: "no-cors", 
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
 
-			var url = 'http://blackjack-api.apps.scldemo-1a93.open.redhat.com/blackjack/user?email='+email;
-			//var url = 'https://ghibliapi.herokuapp.com/people';
-			//const fetchPromise = fetch(url, { mode: 'no-cors', headers: {'Content-Type': 'application/json'}  } );
 			const fetchPromise = fetch(url);
-
 			fetchPromise.then(response => {
 				return response.json();
 			}).then( data => {
-				var amount = data.account.balance.amount;
+				var amount = Number(data.account.balance.amount);
 				player.setCash(amount);
-				console.log('amount is : '+ amount);
-				console.log(data);
+
 			});
 						
-			console.log('email is: '+ document.getElementById('account-email').value);
 		}
 	});
 
