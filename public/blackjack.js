@@ -50,15 +50,17 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 
 	function Player() {
 		var hand  = [],
-				wager = 0,
-				cash  = 0,
-				bank  = 0,
-				ele   = '',
-				score = '';
+			wager = 0,
+			cash  = 0,
+			bank  = 0,
+			ele   = '',
+			score = '';
+		
+		var api_url = 'http://blackjack-api.apps.scldemo-4599.open.redhat.com/blackjack/';
 
 		var account_info = [],
-				email = '',
-				account_number = '';
+			email = '',
+			uid = '';
 
 		this.getElements = function() {
 			if(this === player) {
@@ -131,6 +133,24 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			});
 
 			$('#dcard-0 .popover-content').html(dealer.getScore());
+		};
+
+		this.getAccountInfo = function(email) {
+			const url = api_url +'/user?email=' + email;
+			const fetchPromise = fetch(url);
+
+			fetchPromise.then(response => {
+				return response.json();
+			}).then( data => {
+				var amount = Number(data.account.balance.amount);
+				account_info.email = data.email;
+				account_info.uid = data.uid;
+				player.setCash(amount);
+
+				console.log('account_info :' + account_info.uid + account_info.acid + account_info.email);
+
+			});
+
 		};
 	}
 
@@ -752,23 +772,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			alert('Please enter a valid redhat.com email address!');	
 			location.reload(true);
 		} else {
-			const url = 'http://blackjack-api.apps.scldemo-4599.open.redhat.com/blackjack/user?email='+email;
-			const config = {
-				    method: "GET",
-					mode: "no-cors", 
-					headers: {
-						"Content-Type": "application/json"
-					}
-				};
-
-			const fetchPromise = fetch(url);
-			fetchPromise.then(response => {
-				return response.json();
-			}).then( data => {
-				var amount = Number(data.account.balance.amount);
-				player.setCash(amount);
-
-			});
+			player.getAccountInfo(email);
 						
 		}
 	});
