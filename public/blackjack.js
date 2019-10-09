@@ -69,7 +69,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		// since the OpenBanking API in sandbox mode doesn't allow 
 		// transactions over 1000 EUR (1074 USD), we'll use transaction_limit
 		// to split larger ammounts into multiple transactions
-		this.transaction_limit = 1050;
+		this.transaction_limit = 1000;
 
 		this.getElements = function() {
 			if(this === player) {
@@ -168,16 +168,28 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 
 		this.accountTransaction = function(amount) {
 			const url = api_url + '/user/payment';
-			var payload = {
-				acid: this.account_info['acid'],
-				email: this.account_info['email'],
-				amount: amount
-			};
-			var fetchData = {
-				method: 'POST',
-				body: JSON.stringify(payload)
-			};
-			fetch(url, fetchData);
+			var remanent = amount;
+			var payment;
+
+			while (remanent > 0) {
+				if (remanent > this.transaction_limit) {
+					payment = this.transaction_limit;
+				} else {
+					payment = remanent;
+				}
+				remanent -= payment;
+
+				var payload = {
+					acid: this.account_info['acid'],
+					email: this.account_info['email'],
+					amount: payment
+				};
+				var fetchData = {
+					method: 'POST',
+					body: JSON.stringify(payload)
+				};
+				fetch(url, fetchData);
+			}
 		};
 	}
 
