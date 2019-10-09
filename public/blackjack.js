@@ -168,7 +168,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 
 		this.accountTransaction = function(amount) {
 			const url = api_url + '/user/payment';
-			var remanent = amount;
+			var remanent = Math.abs(amount);
 			var payment;
 
 			while (remanent > 0) {
@@ -182,7 +182,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				var payload = {
 					acid: this.account_info['acid'],
 					email: this.account_info['email'],
-					amount: payment
+					amount: Math.sign(amount)*payment
 				};
 				var fetchData = {
 					method: 'POST',
