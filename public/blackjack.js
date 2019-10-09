@@ -799,6 +799,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			location.reload(true);
 		} else {
 			player.getAccountInfo(email);
+			$('#username span').html(email);
 		}
 	});
 
@@ -807,16 +808,10 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 	$('#wager').numOnly();
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
 	$('#firstGame, #newGame, #cancel').on('click', function(e) { 
-		e.preventDefault(); 
-		//alert('carga valor del banco');
-		//console.log('despues de alert'+ player.getEmail());
-		//console.log(player.account_info);
-		//player.getAccountInfo(player.getEmail());
+		e.preventDefault();
 	});
 	$('#cancel').on('click', function() { $('#myModal').modal('hide');  });
-	// aca carga valor del banco 
 	$('#wager').val(100);
 	$('#cash span').html(player.getCash());
 	player.getBank();
-
 }());
