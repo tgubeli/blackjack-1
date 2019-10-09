@@ -686,7 +686,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
 
-				result = 'Bust - perdio (1/)';
+				result = 'Bust';
 			}
 		} else if(pscore < dscore) {
 			if(pscore <= 21 && dscore > 21) {
@@ -699,7 +699,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				winnings -= wager;
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-				result = 'You lose! - perdio (2/)';
+				result = 'You lose!';
 			}
 		} else if(pscore === dscore) {
 			if(pscore <= 21) {
@@ -707,7 +707,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 					winnings -= wager;
 					player.setBank(winnings);
 					$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-					result = 'You lose - dealer Blackjack! - perdio (3/)';
+					result = 'You lose - dealer Blackjack!';
 				} else {
 					winnings = wager;
 					$('#alert').removeClass('alert-error alert-success').addClass('alert-info');
@@ -718,7 +718,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				winnings -= wager;
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-				result = 'Bust - perdio (4/)';
+				result = 'Bust';
 			}
 		}
 		console.log('llego aca siempre?');
