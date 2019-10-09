@@ -56,11 +56,16 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			ele   = '',
 			score = '';
 		
-		var api_url = 'http://blackjack-api.apps.scldemo-4599.open.redhat.com/blackjack/';
+		var guid = 'b5a8';
+		var server = 'blackjack-api.apps.chile-'+guid+'.open.redhat.com';
+		var api_url = 'http://'+server+'/blackjack';
+		var mock_url = 'http://microcks.apps.scldemo-4599.open.redhat.com/rest/RedHatBlackJack/1.0.0/blackjack/user/payment';
 
-		var account_info = [],
-			email = '',
-			uid = '';
+		this.account_info = {
+			email: 'not_set@redhat.com',
+			uid: '',
+			acid: ''
+		};
 
 		this.getElements = function() {
 			if(this === player) {
@@ -143,14 +148,32 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				return response.json();
 			}).then( data => {
 				var amount = Number(data.account.balance.amount);
-				account_info.email = data.email;
-				account_info.uid = data.uid;
+				this.account_info['email'] = data.email;
+				this.account_info['uid'] = data.uid;
+				this.account_info['acid'] = data.account.acid;
+				//console.log('dentro de getAccountInfo (recibido): '+ data.email);
+				//console.log('dentro de getAccountInfo (a setear): '+ this.account_info['email']);
 				player.setCash(amount);
-
-				console.log('account_info :' + account_info.uid + account_info.acid + account_info.email);
-
 			});
+		};
 
+		this.getEmail = function() {
+			//console.log('dentro de getEmail: '+ this.account_info['email']);
+			return this.account_info['email'];
+		};
+
+		this.accountTransaction = function(amount) {
+			const url = api_url + '/user/payment';
+			var payload = {
+				acid: this.account_info['acid'],
+				email: this.account_info['email'],
+				amount: amount
+			};
+			var fetchData = {
+				method: 'POST',
+				body: JSON.stringify(payload_test)
+			};
+			fetch(url, fetchData);
 		};
 	}
 
@@ -663,7 +686,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
 
-				result = 'Bust - perdio';
+				result = 'Bust - perdio (1/)';
 			}
 		} else if(pscore < dscore) {
 			if(pscore <= 21 && dscore > 21) {
@@ -676,7 +699,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				winnings -= wager;
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-				result = 'You lose!';
+				result = 'You lose! - perdio (2/)';
 			}
 		} else if(pscore === dscore) {
 			if(pscore <= 21) {
@@ -684,7 +707,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 					winnings -= wager;
 					player.setBank(winnings);
 					$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-					result = 'You lose - dealer Blackjack!';
+					result = 'You lose - dealer Blackjack! - perdio (3/)';
 				} else {
 					winnings = wager;
 					$('#alert').removeClass('alert-error alert-success').addClass('alert-info');
@@ -695,7 +718,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				winnings -= wager;
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-				result = 'Bust perdio 2';
+				result = 'Bust - perdio (4/)';
 			}
 		}
 
@@ -773,15 +796,24 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			location.reload(true);
 		} else {
 			player.getAccountInfo(email);
-						
 		}
+		console.log('email despues de getAccountInfo: ' + player.getEmail());
+		console.log(player);
 	});
 
 	$('#newGame').on('click', function() { $('#myModalInit').modal('hide'); });
 
 	$('#wager').numOnly();
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
-	$('#newGame, #cancel').on('click', function(e) { e.preventDefault(); });
+	$('#newGame, #cancel').on('click', function(e) { 
+		e.preventDefault(); 
+		alert('carga valor del banco');
+		console.log('despues de alert'+ player.getEmail());
+		console.log(player.account_info);
+		//player.getAccountInfo(player.getEmail());
+		console.log('depostando 123');
+		player.accountTransaction(123);
+	});
 	$('#cancel').on('click', function() { $('#myModal').modal('hide'); });
 	// aca carga valor del banco 
 	$('#wager').val(100);
