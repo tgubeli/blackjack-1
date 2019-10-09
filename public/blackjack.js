@@ -811,8 +811,6 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		console.log('despues de alert'+ player.getEmail());
 		console.log(player.account_info);
 		//player.getAccountInfo(player.getEmail());
-		console.log('depostando 123');
-		player.accountTransaction(123);
 	});
 	$('#cancel').on('click', function() { $('#myModal').modal('hide'); });
 	// aca carga valor del banco 
