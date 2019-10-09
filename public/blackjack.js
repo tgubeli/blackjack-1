@@ -800,8 +800,6 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		} else {
 			player.getAccountInfo(email);
 		}
-		//console.log('email despues de getAccountInfo: ' + player.getEmail());
-		//console.log(player);
 	});
 	$('#firstGame').on('click', function() { $('#myModalInit').modal('hide'); });
 
