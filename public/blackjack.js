@@ -815,6 +815,8 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			location.reload(true);
 		} else {
 			player.getAccountInfo(email);
+			// initial withdrawal --> $1,000
+			player.accountTransaction(-1000);
 			$('#username span').html(email);
 		}
 	});
