@@ -807,7 +807,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
 	$('#newGame, #cancel').on('click', function(e) { 
 		e.preventDefault(); 
-		alert('carga valor del banco');
+		//alert('carga valor del banco');
 		//console.log('despues de alert'+ player.getEmail());
 		//console.log(player.account_info);
 		//player.getAccountInfo(player.getEmail());
