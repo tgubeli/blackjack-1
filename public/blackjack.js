@@ -155,9 +155,9 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				this.account_info['email'] = data.email;
 				this.account_info['uid'] = data.uid;
 				this.account_info['acid'] = data.account.acid;
-				//console.log('dentro de getAccountInfo (recibido): '+ data.email);
-				//console.log('dentro de getAccountInfo (a setear): '+ this.account_info['email']);
-				player.setCash(amount);
+				// initial withdrawal --> $1,000
+				player.accountTransaction(-1000);
+				player.setCash(1000);
 			});
 		};
 
@@ -815,8 +815,6 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			location.reload(true);
 		} else {
 			player.getAccountInfo(email);
-			// initial withdrawal --> $1,000
-			player.accountTransaction(-1000);
 			$('#username span').html(email);
 		}
 	});
