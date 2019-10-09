@@ -59,13 +59,17 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		var guid = 'b5a8';
 		var server = 'blackjack-api.apps.chile-'+guid+'.open.redhat.com';
 		var api_url = 'http://'+server+'/blackjack';
-		var mock_url = 'http://microcks.apps.scldemo-4599.open.redhat.com/rest/RedHatBlackJack/1.0.0/blackjack/user/payment';
 
 		this.account_info = {
 			email: 'not_set@redhat.com',
 			uid: '',
 			acid: ''
 		};
+
+		// since the OpenBanking API in sandbox mode doesn't allow 
+		// transactions over 1000 EUR (1074 USD), we'll use transaction_limit
+		// to split larger ammounts into multiple transactions
+		this.transaction_limit = 1050;
 
 		this.getElements = function() {
 			if(this === player) {
