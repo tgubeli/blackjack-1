@@ -789,9 +789,9 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 /*****************************************************************/
 
 	//showAlert('TEST - Please enter your e-mail: \n\n');
-	$('#myModalInit').modal();
+	$('#myModalInit').modal({backdrop: 'static'});
 
-	$('#firstGame').on('click', function(e) { 
+	$('#firstGame').on('click', function(e) {
 		var email = document.getElementById('account-email').value;
 
 		if (!emailIsValid(email)) {
@@ -801,18 +801,19 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			player.getAccountInfo(email);
 		}
 	});
+
 	$('#firstGame').on('click', function() { $('#myModalInit').modal('hide'); });
 
 	$('#wager').numOnly();
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
-	$('#newGame, #cancel').on('click', function(e) { 
+	$('#firstGame, #newGame, #cancel').on('click', function(e) { 
 		e.preventDefault(); 
 		//alert('carga valor del banco');
 		//console.log('despues de alert'+ player.getEmail());
 		//console.log(player.account_info);
 		//player.getAccountInfo(player.getEmail());
 	});
-	$('#cancel').on('click', function() { $('#myModal').modal('hide'); });
+	$('#cancel').on('click', function() { $('#myModal').modal('hide');  });
 	// aca carga valor del banco 
 	$('#wager').val(100);
 	$('#cash span').html(player.getCash());
