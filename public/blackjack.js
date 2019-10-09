@@ -171,7 +171,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			};
 			var fetchData = {
 				method: 'POST',
-				body: JSON.stringify(payload_test)
+				body: JSON.stringify(payload)
 			};
 			fetch(url, fetchData);
 		};
@@ -721,6 +721,9 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				result = 'Bust - perdio (4/)';
 			}
 		}
+		console.log('llego aca siempre?');
+		console.log('gane : $'+ winnings);
+		player.accountTransaction(winnings);
 
 		showAlert(result);
 
@@ -788,7 +791,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 	//showAlert('TEST - Please enter your e-mail: \n\n');
 	$('#myModalInit').modal();
 
-	$('#newGame').on('click', function(e) { 
+	$('#firstGame').on('click', function(e) { 
 		var email = document.getElementById('account-email').value;
 
 		if (!emailIsValid(email)) {
@@ -797,19 +800,18 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		} else {
 			player.getAccountInfo(email);
 		}
-		console.log('email despues de getAccountInfo: ' + player.getEmail());
-		console.log(player);
+		//console.log('email despues de getAccountInfo: ' + player.getEmail());
+		//console.log(player);
 	});
-
-	$('#newGame').on('click', function() { $('#myModalInit').modal('hide'); });
+	$('#firstGame').on('click', function() { $('#myModalInit').modal('hide'); });
 
 	$('#wager').numOnly();
 	$('#actions:not(#wager), #game, #myModal').disableSelection();
 	$('#newGame, #cancel').on('click', function(e) { 
 		e.preventDefault(); 
 		alert('carga valor del banco');
-		console.log('despues de alert'+ player.getEmail());
-		console.log(player.account_info);
+		//console.log('despues de alert'+ player.getEmail());
+		//console.log(player.account_info);
 		//player.getAccountInfo(player.getEmail());
 	});
 	$('#cancel').on('click', function() { $('#myModal').modal('hide'); });
