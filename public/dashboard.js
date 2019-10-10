@@ -6,6 +6,13 @@ $(document).ready(function() {
     $.getJSON(api_url, function(response) {
         console.log(response);
 
+        // formating response
+        
+        for (var i=0; i < response.length; i++) {
+            money = Number(response[i].balance).toLocaleString('en-US', { minimumFractionDigits: 2 });
+            response[i].balance = money;
+        }
+
         $('#blackjack-ranking').dynatable({
             features: {
                 paginate: false,
