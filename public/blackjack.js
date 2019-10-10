@@ -101,6 +101,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 
 		this.setWager = function(money) {
 			// llamar a banco aca
+			player.accountTransaction(-money);
 			wager += parseInt(money, 0);
 		};
 
@@ -155,9 +156,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				this.account_info['email'] = data.email;
 				this.account_info['uid'] = data.uid;
 				this.account_info['acid'] = data.account.acid;
-				// initial withdrawal --> $1,000
-				player.accountTransaction(-1000);
-				player.setCash(1000);
+				player.setCash(amount);
 			});
 		};
 
@@ -701,7 +700,6 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				winnings -= wager;
 				player.setBank(winnings);
 				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-
 				result = 'Bust';
 			}
 		} else if(pscore < dscore) {
@@ -737,9 +735,11 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 				result = 'Bust';
 			}
 		}
-		console.log('llego aca siempre?');
-		console.log('gane : $'+ winnings);
-		player.accountTransaction(winnings);
+		console.log('Winnings : $'+ winnings);
+		if (winnings > 0) {
+			// Already discounted money, so only positive winnings generate transactions
+			player.accountTransaction(winnings);
+		}
 
 		showAlert(result);
 
