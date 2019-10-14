@@ -56,7 +56,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			ele   = '',
 			score = '';
 		
-		var guid = 'b5a8';
+		var guid = '8b2e';';
 		var server = 'blackjack-api.apps.chile-'+guid+'.open.redhat.com';
 		var api_url = 'http://'+server+'/blackjack';
 
