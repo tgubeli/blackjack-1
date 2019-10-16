@@ -187,7 +187,10 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 					method: 'POST',
 					body: JSON.stringify(payload)
 				};
+				// disable/enable Deal button
+				$('#deal').prop('disabled', true);
 				fetch(url, fetchData);
+				$('#deal').prop('disabled', false);
 			}
 		};
 	}
@@ -814,15 +817,18 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			alert('Please enter a valid redhat.com email address!');	
 			location.reload(true);
 		} else {
+			// block Deal button while getting info
+			$('#deal').prop('disabled', true);
 			player.getAccountInfo(email);
 			$('#username span').html(email);
+			$('#deal').prop('disabled', false);
 		}
 	});
 
 	$('#firstGame').on('click', function() { $('#myModalInit').modal('hide'); });
 
 	$('#wager').numOnly();
-	$('#actions:not(#wager), #game, #myModal').disableSelection();
+	$('#actions:not(#wager), #deal, #game, #myModal').disableSelection();
 	$('#firstGame, #newGame, #cancel').on('click', function(e) { 
 		e.preventDefault();
 	});
@@ -830,4 +836,6 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 	$('#wager').val(100);
 	$('#cash span').html(player.getCash());
 	player.getBank();
+	
+
 }());
