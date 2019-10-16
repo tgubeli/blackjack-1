@@ -56,9 +56,9 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 			ele   = '',
 			score = '';
 		
-		var guid = '8b2e';';
-		var server = 'blackjack-api.apps.chile-'+guid+'.open.redhat.com';
-		var api_url = 'http://'+server+'/blackjack';
+		var guid = 'chie-8b2e';
+		var api_payment = 'http://blackjack-payment.apps.'+guid+'.open.redhat.com/blackjack';
+		var api_users = 'http://blackjack-users.apps.'+guid+'.open.redhat.com/blackjack';
 
 		this.account_info = {
 			email: 'not_set@redhat.com',
@@ -146,7 +146,7 @@ resetBoard, showBoard, showAlert, getWinner, jQuery, wager */
 		};
 
 		this.getAccountInfo = function(email) {
-			const url = api_url +'/user?email=' + email;
+			const url = api_users +'/user?email=' + email;
 			const fetchPromise = fetch(url);
 
 			fetchPromise.then(response => {
